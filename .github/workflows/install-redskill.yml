@@ -7,11 +7,17 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - name: 安装Red Skill商店
-        run: curl -fsSL https://redskill.xiaohongshu.net/install.sh | bash
+      - name: 下载安装脚本
+        run: curl -fsSL -o install-redskill.sh https://redskill.xiaohongshu.net/install.sh
+
+      - name: 运行安装脚本
+        run: bash install-redskill.sh
+
+      - name: 检查redskill是否装好
+        run: which redskill
 
       - name: 安装Heytea技能
         run: redskill install heytea
 
-      - name: 查看已安装的技能
+      - name: 查看所有技能
         run: redskill list
