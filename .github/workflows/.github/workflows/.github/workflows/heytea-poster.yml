@@ -1,0 +1,37 @@
+name: 喜茶风海报生成器
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_name:
+        description: '输入图片文件名（需先将图片上传到 input 文件夹）'
+        required: true
+        default: 'photo.jpg'
+      title:
+        description: '海报标题（可选）'
+        required: false
+        default: ''
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install Pillow rembg numpy opencv-python-headless
+
+      - name: 生成海报
+        run: python generate_poster.py "${{ github.event.inputs.image_name }}" "${{ github.event.inputs.title }}"
+
+      - name: 上传生成结果
+        uses: actions/upload-artifact@v4
+        with:
+          name: 喜茶风海报
+          path: output/
