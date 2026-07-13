@@ -1,0 +1,17 @@
+name: 安装RedSkill和Heytea
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 安装Red Skill商店
+        run: curl -fsSL https://redskill.xiaohongshu.net/install.sh | bash
+
+      - name: 安装Heytea技能
+        run: redskill install heytea
+
+      - name: 查看已安装的技能
+        run: redskill list
