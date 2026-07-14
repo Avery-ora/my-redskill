@@ -21,7 +21,7 @@ jobs:
 
       - name: 安装 Python 和依赖
         run: |
-          pip install Pillow rembg
+         pip install Pillow "rembg[cpu]"
 
       - name: 生成带字版海报
         if: ${{ github.event.inputs.title != '' }}
