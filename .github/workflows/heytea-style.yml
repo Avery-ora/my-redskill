@@ -1,0 +1,39 @@
+name: 喜茶风格海报生成
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_name:
+        description: '输入图片文件名（需先上传到 input 文件夹）'
+        required: true
+        default: 'photo.jpg'
+      title:
+        description: '海报标题（如：泰香开饭）'
+        required: false
+        default: ''
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python 和依赖
+        run: |
+          pip install Pillow rembg
+
+      - name: 生成带字版海报
+        if: ${{ github.event.inputs.title != '' }}
+        run: |
+          python generate_heytea_style.py "${{ github.event.inputs.image_name }}" "${{ github.event.inputs.title }}" with_title
+
+      - name: 生成无字版海报
+        run: |
+          python generate_heytea_style.py "${{ github.event.inputs.image_name }}" "" without_title
+
+      - name: 上传海报
+        uses: actions/upload-artifact@v4
+        with:
+          name: 喜茶风海报
+          path: output/
